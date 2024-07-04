@@ -1,0 +1,74 @@
+#intro{
+    height: calc(100vh - 4rem);
+    width : 100vw;
+    max-width : 75rem;
+    margin : 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.introContent{
+    height: 100vh;
+    width: 100vw;
+    padding: 2rem;
+    font-size:3rem;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bg{
+    object-fit: cover;
+    position: absolute;
+    right: 0;
+    top:0;
+    z-index: -1;
+    height: 100vh;
+    margin: auto 0;
+}
+
+.brand{
+    color : cornflowerblue
+}
+
+
+.btn{
+    border: none;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    color: black;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+.btn > img{
+    height: 1rem;
+    object-fit: cover;
+    margin-right: 1rem;
+
+}
+
+.hello{
+    font-size:1.75rem;
+    font-weight: 200;
+}
+.intropara{
+    font-size:1.2rem;
+    font-weight: 200;
+}
+
+ @media screen and (max-width:840px) {
+    .bg{
+        right: -10vw;
+    } 
+    .introContent{
+        font-size: 10vw;
+    }
+    .hello{
+        font-size: 4.5vw;
+    }
+} 
