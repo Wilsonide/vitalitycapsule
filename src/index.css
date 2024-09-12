@@ -12,6 +12,7 @@ body {
   overflow: hidden;
   overflow-y: scroll;
   color: white;
+  width: 100%;
 }
 .myRoot{
   display: flex;
