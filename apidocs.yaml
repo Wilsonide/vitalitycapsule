@@ -1,0 +1,515 @@
+openapi: 3.0.3
+info:
+  title: Hng FastApi Boilerplate
+  description: |-
+    Welcome to the HNG Fast API documentation! This documentation is based on the OpenAPI 3.0 specification and serves as a sample FastAPI API boilerplate. Our goal is to provide a comprehensive and user-friendly API boilerplate that allows developers to easily kickstart their FastAPI projects.
+  version: 1.0.11
+tags:
+  - name: Authentication
+    description: User registration and authentication routes
+  - name: Account Management
+    description: User account management routes
+  - name: About
+    description: Company contact details
+  - name: Admin
+    description: Endpoints for administrative actions
+  - name: Profile
+    description: Endpoints related to user profile management
+paths:
+  /signup:
+    post:
+      tags:
+        - Authentication
+      summary: Registers a user
+      description: Creates a user account
+      operationId: createUser
+      requestBody:
+        description: Creates a User account
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "201":
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid parameter
+        "422":
+          description: Validation failed
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      description: Logs in the user and returns the token
+      requestBody:
+        description: Enter email and password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User-login"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Wrong Email or Password
+        "404":
+          description: User Not Found
+  /auth/social-login:
+    post:
+      tags:
+        - Authentication
+      summary: Social login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+      responses:
+        "200":
+          description: Social login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+        "401":
+          description: Unauthorized
+
+  /auth/magic-link:
+    post:
+      tags:
+        - Authentication
+      summary: Send magic link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MagicLinkRequest"
+      responses:
+        "200":
+          description: Magic link sent successfully
+        "400":
+          description: Bad request
+
+  /auth/password-reset:
+    post:
+      tags:
+        - Authentication
+      summary: Request password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetRequest"
+      responses:
+        "200":
+          description: Password reset link sent successfully
+        "400":
+          description: Bad request
+  /user/{user_id}:
+    get:
+      tags:
+        - Account Management
+      summary: Retrieves user by ID
+      description: Gets user details by the ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User-details"
+        "401":
+          description: Unauthorized - Invalid credentials
+        "404":
+          description: User Not Found
+      security:
+        - jwt: []
+    put:
+      tags:
+        - Account Management
+      summary: Update user details
+      description: Updates the user details
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: User details to update
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: false
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized - Invalid credentials
+        "404":
+          description: User Not Found
+      security:
+        - jwt: []
+
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get all users
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserLists"
+        "500":
+          description: Internal server error
+      security:
+        - jwt: []
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: Get profile settings
+      responses:
+        "200":
+          description: Profile settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "500":
+          description: Internal server error
+
+    put:
+      tags:
+        - Profile
+      summary: Update profile settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User-details"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+  /email:
+    post:
+      tags:
+        - Messaging
+      summary: Send email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailRequest"
+      responses:
+        "200":
+          description: Email sent successfully
+        "400":
+          description: Bad request
+  /admin/user/{user_id}:
+    delete:
+      tags:
+        - Admin
+      summary: Deletes a user account
+      description: Deletes a user account
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful operation
+        "401":
+          description: Unauthorized - Invalid credentials
+        "404":
+          description: User Not Found
+      security:
+        - jwt: []
+  /notifications:
+    get:
+      tags:
+        - Notifications
+      summary: Get notifications
+      responses:
+        "200":
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+        "500":
+          description: Internal server error
+
+  /blog/posts:
+    get:
+      tags:
+        - Blog
+      summary: Get blog posts
+      responses:
+        "200":
+          description: List of blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+        "500":
+          description: Internal server error
+
+    post:
+      tags:
+        - Blog
+      summary: Create a new blog post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogPostCreate"
+      responses:
+        "201":
+          description: Blog post created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+      security:
+        - jwt: []
+  /blog/posts/{id}:
+    get:
+      tags:
+        - Blog
+      summary: Get single blog post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Blog post data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Blog post not found
+        "500":
+          description: Internal server error
+  /contacts:
+    get:
+      tags:
+        - About
+      summary: Gets company contacts
+      description: Gets company contacts information
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contacts"
+components:
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - first_name
+        - last_name
+        - email
+        - password
+
+    UserLists:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+
+    User-login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    User-details:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+    Contacts:
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+    SocialLogin:
+      type: object
+      properties:
+        provider:
+          type: string
+        access_token:
+          type: string
+
+    MagicLinkRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+
+    EmailRequest:
+      type: object
+      properties:
+        to:
+          type: string
+          format: email
+        subject:
+          type: string
+        body:
+          type: string
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+
+    BlogPost:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+    Token:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+
+    UserUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+    BlogPostCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string

@@ -10,13 +10,16 @@ import Works from "./components/works/works";
 function App() { 
  
 return (
-  <div>
+  <div className="myRoot">
     <Navbar/>
-    <Intro/>
-    <Skills/>
-    <Works/>
-    <Contact/>
+    <div className="myRoot1">
+      <Intro/>
+      <Skills/>
+      <Works/>
+      <Contact/>
+    </div>
     <Footer/>
+    
   </div>
 )
 }

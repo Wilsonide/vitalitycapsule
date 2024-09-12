@@ -16,12 +16,15 @@ const Intro = () => {
             <p className="intropara">
                 I am a skilled software developer with experience in <br/>creating and designing applications
             </p>
-            <Link href='mailto:ichekuwilson538@gmail.com'>
+            <a 
+            href='mailto:ichekuwilson538@gmail.com'
+            target="_blank"
+            >
                 <button className="btn">
                     <img src={Img} alt="hire me" />
                     Hire me
                 </button>
-            </Link>
+            </a>
         </div>
         <img src={bg} alt="profileImage" className="bg" />
     </section>

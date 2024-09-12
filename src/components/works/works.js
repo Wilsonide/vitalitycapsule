@@ -99,11 +99,6 @@ const Works = () => {
             </div>
           </div>
         </div>
-        <Link>
-            <button className="workbtn">
-                See more
-            </button>
-        </Link>
     </section>
   )
 }

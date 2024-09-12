@@ -1,15 +1,26 @@
-*{
+* {
   background: transparent;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif ;
+  font-family: 'Poppins', sans-serif;
   text-decoration: none;
   margin: 0;
   padding: 0;
 }
 
-body{
-  background: rgb(30,30,30);
+body {
+  background: rgb(30, 30, 30);
   overflow: hidden;
   overflow-y: scroll;
   color: white;
+}
+.myRoot{
+  display: flex;
+  flex-direction: column;
+
+}
+.myRoot1{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
 }
