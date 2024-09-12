@@ -126,6 +126,10 @@
 
    .worksImg{
     height: 54vw;
+    
    } 
+   .worksImgs .container{
+    width: 100%;
+   }
 
 }
