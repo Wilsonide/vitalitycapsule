@@ -20,7 +20,7 @@ const sendEmail = async (
 };
 
 const submitForm = async (
-  prevState: unknown,
+  _prevState: unknown,
   formData: { get: (arg0: string) => unknown }
 ) => {
   const templateParams = {
